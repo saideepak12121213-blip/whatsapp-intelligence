@@ -10,8 +10,8 @@ backend/classflow.db
 *.sqlite3
 
 # WhatsApp Raw Chats & Data (Prevent pushing sensitive chats)
-backend/sample_chats/
 *.chat.txt
+!backend/sample_chats/*.txt
 !requirements.txt
 !backend/requirements.txt
 

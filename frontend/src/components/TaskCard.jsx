@@ -131,11 +131,11 @@ export default function TaskCard({ task, onStatusChange, onViewSource }) {
                 <AlertTriangle size={11} /> OVERDUE
               </span>
             )}
-            <span className={`badge ${isCompleted ? 'badge-completed' : isRemindLater ? 'badge-medium' : 'badge-pending'}`}>
-              {isCompleted ? <CheckCircle2 size={11} /> : isRemindLater ? <BellRing size={11} /> : <Clock size={11} />}
-              {task.personal_status.replace('_', ' ')}
-            </span>
-          </div>
+              <span className={`badge ${isCompleted ? 'badge-completed' : isRemindLater ? 'badge-medium' : 'badge-pending'}`}>
+                {isCompleted ? <CheckCircle2 size={11} /> : isRemindLater ? <BellRing size={11} /> : <Clock size={11} />}
+                {(task.personal_status || 'PENDING').replace('_', ' ')}
+              </span>
+            </div>
         </div>
 
         {/* Task Title */}
