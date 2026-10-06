@@ -11,7 +11,9 @@ backend/classflow.db
 
 # WhatsApp Raw Chats & Data (Prevent pushing sensitive chats)
 backend/sample_chats/
-*.txt
+*.chat.txt
+!requirements.txt
+!backend/requirements.txt
 
 # Python artifacts
 __pycache__/
