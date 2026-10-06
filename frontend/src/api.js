@@ -1,4 +1,5 @@
-const API_BASE = '/api';
+const rawApiUrl = import.meta.env.VITE_API_URL || 'https://whatsapp-intelligence-dq0v.onrender.com';
+const API_BASE = rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl.replace(/\/$/, '')}/api`;
 
 function getAuthHeader() {
   const token = localStorage.getItem('classflow_token');
@@ -6,7 +7,8 @@ function getAuthHeader() {
 }
 
 async function request(endpoint, options = {}) {
-  const url = `${API_BASE}${endpoint}`;
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const url = `${API_BASE}${cleanEndpoint}`;
   const headers = {
     ...getAuthHeader(),
     ...options.headers,

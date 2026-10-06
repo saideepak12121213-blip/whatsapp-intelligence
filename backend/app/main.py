@@ -20,10 +20,25 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS setup
+# CORS setup — specific origins and origin regex for secure credential handling
+default_origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://whatsapp-intelligence-dq0v.onrender.com",
+]
+env_origins = os.getenv("ALLOWED_ORIGINS", "")
+if env_origins:
+    custom_origins = [orig.strip() for orig in env_origins.split(",") if orig.strip()]
+    allowed_origins = list(set(default_origins + custom_origins))
+else:
+    allowed_origins = default_origins
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
+    allow_origin_regex=r"https://.*\.vercel\.app|https://.*\.onrender\.com|https://.*\.netlify\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
