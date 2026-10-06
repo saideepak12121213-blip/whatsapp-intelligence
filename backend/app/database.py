@@ -14,8 +14,26 @@ engine_kwargs = {
 if is_sqlite:
     engine_kwargs["connect_args"] = {"check_same_thread": False}
 
+db_url = settings.DATABASE_URL
+if db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
+
+# Ensure resilient driver selection if using PostgreSQL
+if not is_sqlite:
+    try:
+        import psycopg  # noqa: F401
+    except ImportError:
+        try:
+            import psycopg2  # noqa: F401
+            if "postgresql+psycopg://" in db_url:
+                db_url = db_url.replace("postgresql+psycopg://", "postgresql+psycopg2://", 1)
+            elif db_url.startswith("postgresql://") and not db_url.startswith("postgresql+"):
+                db_url = db_url.replace("postgresql://", "postgresql+psycopg2://", 1)
+        except ImportError:
+            pass
+
 engine = create_engine(
-    settings.DATABASE_URL,
+    db_url,
     **engine_kwargs
 )
 
